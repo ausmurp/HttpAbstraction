@@ -1,0 +1,11 @@
+﻿using System.Net.Http;
+
+namespace HttpAbstraction.Client
+{
+    public class OAuth2Client<TGrant> : WebClient
+    {
+        public OAuth2Client(OAuth2ClientOptions<TGrant> options, HttpMessageHandler handler = null) : base(options, new OAuth2Handler<TGrant>(options, handler))
+        {
+        }
+    }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <description>$description$</description>
+    <projectUrl>https://github.com/ausmurp/HttpAbstraction</projectUrl>
+    <licenseUrl>https://github.com/ausmurp/HttpAbstraction/blob/master/LICENSE</licenseUrl>
+    <iconUrl>https://robohash.org/httpabstraction.png</iconUrl>
+    <tags>REST HTTP API JSON XML</tags>
+    <releaseNotes><![CDATA[
+            For full release notes see https://github.com/ausmurp/HttpAbstraction/releases
+            ]]></releaseNotes>
+  </metadata>
+</package>
