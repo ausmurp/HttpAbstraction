@@ -11,6 +11,7 @@ namespace HttpAbstraction.Client
 {
     public class OAuth2Handler<TGrant> : DelegatingHandler
     {
+        private readonly object lockObj;
         private readonly OAuth2ClientOptions<TGrant> _options;
         private readonly HttpClient _authClient;
         private Token _token;
@@ -18,6 +19,10 @@ namespace HttpAbstraction.Client
         public OAuth2Handler(OAuth2ClientOptions<TGrant> options, HttpMessageHandler innerHandler = null)
         {
             _options = options;
+
+            //The idea here is that the client should be instantiated on the main thread only when used inside 
+            //a threaded process. This will ensure that the Authorize() method is called only once.
+            lockObj = new object();
 
             _authClient = innerHandler == null ? new HttpClient() : new HttpClient(innerHandler, true);
             _authClient.BaseAddress = new Uri($"{options.BaseUri}/{options.TokenPath}/".Replace(@"//", @"/").Replace(@":/", @"://"));
@@ -31,8 +36,7 @@ namespace HttpAbstraction.Client
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             //Must lock here so same token is used for all outside threads.
-            //options get passed upon instantiation so it is safe to use as lock obj
-            lock (_options)
+            lock (lockObj)
             {
                 if (_token == null || _token.IsExpired)
                     _token = Authorize().Result;
