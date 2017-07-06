@@ -35,18 +35,31 @@ namespace HttpAbstraction.Client
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            //Must lock here so same token is used for all outside threads.
-            lock (lockObj)
-            {
-                if (_token == null || _token.IsExpired)
-                    _token = Authorize().Result;
-            }
+            if (_token == null || _token.IsExpired)
+                _token = GetToken();
 
-            SetAuthHeader(request);
+            SetAuthHeader(request, _token);
 
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
             return response;
+        }
+
+        /// <summary>
+        /// Locks to ensure only a single thread can authorize. This ensures the other threads use the token returned by the first.
+        /// </summary>
+        /// <returns></returns>
+        protected Token GetToken()
+        {
+            lock (lockObj)
+            {
+                if (_token == null || _token.IsExpired)
+                {
+                    _token = Authorize().Result;
+                }
+            }
+
+            return _token;
         }
 
         protected async Task<Token> Authorize()
@@ -111,9 +124,12 @@ namespace HttpAbstraction.Client
             return token;
         }
 
-        protected void SetAuthHeader(HttpRequestMessage request)
+        protected void SetAuthHeader(HttpRequestMessage request, Token token)
         {
-            request.Headers.Add("Authorization", $"{_token.Type} {_token.AccessToken}");
+            if (request.Headers.Contains("Authorization"))
+                request.Headers.Remove("Authorization");
+
+            request.Headers.Add("Authorization", $"{token.Type} {token.AccessToken}");
         }
 
         protected override void Dispose(bool disposing)

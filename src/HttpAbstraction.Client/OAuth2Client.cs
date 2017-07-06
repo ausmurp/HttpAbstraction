@@ -7,5 +7,6 @@ namespace HttpAbstraction.Client
         public OAuth2Client(OAuth2ClientOptions<TGrant> options, HttpMessageHandler handler = null) : base(options, new OAuth2Handler<TGrant>(options, handler))
         {
         }
+
     }
 }
