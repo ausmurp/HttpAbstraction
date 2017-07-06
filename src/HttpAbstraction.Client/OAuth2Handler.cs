@@ -30,8 +30,13 @@ namespace HttpAbstraction.Client
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (_token == null || _token.IsExpired)
-                _token = await Authorize();
+            //Must lock here so same token is used for all outside threads.
+            //options get passed upon instantiation so it is safe to use as lock obj
+            lock (_options)
+            {
+                if (_token == null || _token.IsExpired)
+                    _token = Authorize().Result;
+            }
 
             SetAuthHeader(request);
 
