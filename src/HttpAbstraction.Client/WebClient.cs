@@ -12,11 +12,10 @@ namespace HttpAbstraction.Client
 {
     public class WebClient : HttpClient
     {
-        public WebClient(WebClientOptions options, HttpMessageHandler handler = null) : base(new WebHandler(options, handler), true)
+        public WebClient(WebClientOptions options, HttpMessageHandler handler = null, bool disposeHandler = true) : base(new RetryHandler(options.RetryAttempts, options.RetryDelaySeconds, handler), disposeHandler)
         {
             BaseAddress = new Uri(options.BaseUri);
             Timeout = TimeSpan.FromSeconds(options.ConnectionTimeoutSeconds);
-            ServicePointManager.DefaultConnectionLimit = options.ConnectionLimit;
         }
 
         public async Task<TResult> Get<TResult>(string uri, Dictionary<string, string> queryParams = null)
