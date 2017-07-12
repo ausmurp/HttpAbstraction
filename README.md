@@ -24,8 +24,6 @@ var options = new OAuth2ClientOptions<ResourceOwnerGrantOptions>(grantOptions)
 	ClientId = [yourapiclientid],
 	ClientSecret = [yourapisecret],
 	HasIntrospection = true, //Only if expiration/claims are returned in separate call to oauth2/v1/token/introspection
-	TimeoutRetries = 2,
-	ConnectionLimit = 100
 };
 
 using(var client = new OAuth2Client(options))
