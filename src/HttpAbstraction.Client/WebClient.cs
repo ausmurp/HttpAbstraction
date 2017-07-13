@@ -106,7 +106,11 @@ namespace HttpAbstraction.Client
             var request = new HttpRequestMessage(httpMethod, uri);
 
             if (content != null)
-                request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+                request.Content =
+                    new StringContent(
+                        JsonConvert.SerializeObject(content,
+                            new JsonSerializerSettings() {NullValueHandling = NullValueHandling.Ignore}), Encoding.UTF8,
+                        "application/json");
 
             return request;
         }

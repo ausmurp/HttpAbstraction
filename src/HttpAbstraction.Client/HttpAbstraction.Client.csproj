@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net462</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <PackageId>HttpAbstraction.Client</PackageId>
     <Authors>Austin Murphy</Authors>
     <Description>HttpClient abstractions for web, with OAuth2 implementation, and chaining handlers.</Description>
