@@ -24,12 +24,12 @@ var options = new OAuth2ClientOptions<ResourceOwnerGrantOptions>(grantOptions)
 	ClientId = [yourapiclientid],
 	ClientSecret = [yourapisecret],
 	HasIntrospection = true, //Only if expiration/claims are returned in separate call to oauth2/v1/token/introspection
-	TimeoutRetries = 2,
-	ConnectionLimit = 100
 };
 
-using(var client = new OAuth2Client(options))
-{
-	var users = client.Get<List<User>>("users"); //Just an example
-}
+var client = new OAuth2Client(options);
+var users = client.Get<List<User>>("users"); //Just an example
+
+//You want to re-use HttpClient so do not put in using statement as this can cause network socket exhaustion
+//Be sure to dispose client
+
 ```
