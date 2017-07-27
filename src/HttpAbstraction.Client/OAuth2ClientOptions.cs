@@ -1,6 +1,6 @@
 ﻿namespace HttpAbstraction.Client
 {
-    public class OAuth2ClientOptions<TGrant> : WebClientOptions
+    public class OAuth2ClientOptions<TGrant> : RetryClientOptions
     {
         public string TokenPath { get; set; }
         public string ClientId { get; set; }

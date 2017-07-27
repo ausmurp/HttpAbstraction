@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,14 +8,12 @@ namespace HttpAbstraction.Client
 {
     public class RetryHandler : DelegatingHandler
     {
-        private readonly int _retryAttempts;
-        private readonly int _retryDelaySeconds;
+        private readonly RetryClientOptions _options;
 
-        public RetryHandler(int retryAttempts, int retryDelaySeconds, HttpMessageHandler innerHandler = null) : base(
-            innerHandler ?? new HttpClientHandler())
+        public RetryHandler(RetryClientOptions options, HttpMessageHandler innerHandler = null) : base(
+            innerHandler ?? new WinHttpHandler())
         {
-            _retryAttempts = retryAttempts;
-            _retryDelaySeconds = retryDelaySeconds;
+            _options = options;
         }
         
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -25,11 +22,11 @@ namespace HttpAbstraction.Client
             {
                 HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-                if (!response.IsSuccessStatusCode && _retryAttempts > 0)
+                if (!response.IsSuccessStatusCode && _options.RetryAttempts > 0)
                 {
                     int attempts = 0;
 
-                    while (attempts < _retryAttempts)
+                    while (attempts < _options.RetryAttempts)
                     {
                         try
                         {
@@ -44,13 +41,13 @@ namespace HttpAbstraction.Client
                             {
                                 // 503 Service Unavailable
                                 // Wait a bit and try again later
-                                await Task.Delay(_retryDelaySeconds, cancellationToken);
+                                await Task.Delay(_options.RetryDelaySeconds, cancellationToken);
                             }
                             else if (response.StatusCode == (HttpStatusCode)429)
                             {
                                 // 429 Too many requests
                                 // Wait a bit and try again later
-                                await Task.Delay(_retryDelaySeconds, cancellationToken);
+                                await Task.Delay(_options.RetryDelaySeconds, cancellationToken);
                             }
 
                             // Not something we can retry so return the response as is
@@ -59,7 +56,7 @@ namespace HttpAbstraction.Client
                         {
                             // Network error
                             // Wait a bit and try again later
-                            await Task.Delay(_retryDelaySeconds, cancellationToken);
+                            await Task.Delay(_options.RetryDelaySeconds, cancellationToken);
                         }
                     }
                 }

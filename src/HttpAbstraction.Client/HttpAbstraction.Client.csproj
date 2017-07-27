@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net462</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.2.2</Version>
+    <Version>1.2.3</Version>
     <PackageId>HttpAbstraction.Client</PackageId>
     <Authors>Austin Murphy</Authors>
     <Description>HttpClient abstractions for web, with OAuth2 implementation, and chaining handlers.</Description>
@@ -12,13 +12,15 @@
     <PackageTags>REST HTTP API JSON XML</PackageTags>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/ausmurp/HttpAbstraction</PackageProjectUrl>
-    <PackageIconUrl>https://robohash.org/httpabstraction.png</PackageIconUrl>
+    <PackageIconUrl>https://robohash.org/httpabstraction.Client.png</PackageIconUrl>
     <RepositoryUrl></RepositoryUrl>
     <PackageLicenseUrl>https://github.com/ausmurp/HttpAbstraction/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">

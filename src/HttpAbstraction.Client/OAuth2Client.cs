@@ -2,9 +2,9 @@
 
 namespace HttpAbstraction.Client
 {
-    public class OAuth2Client<TGrant> : WebClient
+    public class OAuth2Client<TGrant> : RetryClient
     {
-        public OAuth2Client(OAuth2ClientOptions<TGrant> options, HttpMessageHandler handler = null) : base(options, new OAuth2Handler<TGrant>(options, handler))
+        public OAuth2Client(OAuth2ClientOptions<TGrant> options, HttpMessageHandler handler = null, bool disposeHandler = true) : base(options, new OAuth2Handler<TGrant>(options, handler), disposeHandler)
         {
         }
 
