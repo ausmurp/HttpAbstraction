@@ -26,7 +26,7 @@ var options = new OAuth2ClientOptions<ResourceOwnerGrantOptions>(grantOptions)
 	HasIntrospection = true, //Only if expiration/claims are returned in separate call to oauth2/v1/token/introspection
 };
 
-var client = new OAuth2Client(options);
+var client = new OAuth2Client<ResourceOwnerGrantOptions>(options);
 var users = client.Get<List<User>>("users"); //Just an example
 
 //You want to re-use HttpClient so do not put in using statement as this can cause network socket exhaustion
