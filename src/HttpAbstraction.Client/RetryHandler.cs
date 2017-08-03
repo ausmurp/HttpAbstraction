@@ -11,7 +11,7 @@ namespace HttpAbstraction.Client
         private readonly RetryClientOptions _options;
 
         public RetryHandler(RetryClientOptions options, HttpMessageHandler innerHandler = null) : base(
-            innerHandler ?? new WinHttpHandler())
+            innerHandler ?? new HttpClientHandler())
         {
             _options = options;
         }

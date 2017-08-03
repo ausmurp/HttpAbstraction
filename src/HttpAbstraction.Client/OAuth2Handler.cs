@@ -30,7 +30,7 @@ namespace HttpAbstraction.Client
             string secret = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{options.ClientId}:{System.Net.WebUtility.UrlEncode(options.ClientSecret)}"));
             _authClient.DefaultRequestHeaders.Add("Authorization", $"Basic {secret}");
 
-            InnerHandler = innerHandler ?? new WinHttpHandler();
+            InnerHandler = innerHandler ?? new HttpClientHandler();
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

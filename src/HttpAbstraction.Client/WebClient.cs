@@ -12,7 +12,7 @@ namespace HttpAbstraction.Client
 {
     public class WebClient : HttpClient, IWebClient
     {
-        public WebClient(WebClientOptions options, HttpMessageHandler handler = null, bool disposeHandler = true) : base(handler ?? new WinHttpHandler(), disposeHandler)
+        public WebClient(WebClientOptions options, HttpMessageHandler handler = null, bool disposeHandler = true) : base(handler ?? new HttpClientHandler(), disposeHandler)
         {
             BaseAddress = new Uri(options.BaseUri);
             Timeout = TimeSpan.FromSeconds(options.ConnectionTimeoutSeconds);
