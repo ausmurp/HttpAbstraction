@@ -15,7 +15,15 @@
     <PackageIconUrl>https://robohash.org/httpabstraction.Client.png</PackageIconUrl>
     <RepositoryUrl></RepositoryUrl>
     <PackageLicenseUrl>https://github.com/ausmurp/HttpAbstraction/blob/master/LICENSE</PackageLicenseUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
